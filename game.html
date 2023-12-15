@@ -1,0 +1,158 @@
+<!--<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Guessing Game</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+
+        #game-container {
+            margin-top: 50px;
+        }
+
+        #result {
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Number Guessing Game</h1>
+
+    <div id="game-container">
+        <p>Guess a number between 1 and 10:</p>
+        <input type="number" id="user-guess" min="1" max="10">
+        <button onclick="checkGuess()">Submit Guess</button>
+        <p id="result"></p>
+    </div>
+
+    <script>
+        // Generate a random number between 1 and 10
+        const secretNumber = Math.floor(Math.random() * 10) + 1;
+
+        function checkGuess() {
+            // Get the user's guess
+            const userGuess = parseInt(document.getElementById('user-guess').value);
+
+            // Check if the guess is correct
+            if (userGuess === secretNumber) {
+                document.getElementById('result').innerText = 'Congratulations! You guessed the correct number!';
+            } else {
+                document.getElementById('result').innerText = 'Oops! Try again.';
+            }
+        }
+    </script>
+
+</body>
+</html>-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Card Game</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #game-container {
+            display: grid;
+            grid-template-columns: repeat(4, 100px);
+            grid-gap: 10px;
+        }
+
+        .card {
+            width: 100px;
+            height: 100px;
+            background-color: #ddd;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="game-container"></div>
+
+    <script>
+        const cards = ['A', 'A', 'B', 'B', 'C', 'C', 'D', 'D', 'E', 'E', 'F', 'F', 'G', 'G', 'H', 'H'];
+
+        let flippedCards = [];
+        let matchedPairs = 0;
+
+        // Shuffle the cards
+        cards.sort(() => Math.random() - 0.5);
+
+        const gameContainer = document.getElementById('game-container');
+
+        // Create the card elements
+        cards.forEach((card, index) => {
+            const cardElement = document.createElement('div');
+            cardElement.classList.add('card');
+            cardElement.dataset.index = index;
+            cardElement.addEventListener('click', flipCard);
+            gameContainer.appendChild(cardElement);
+        });
+
+        // Function to handle card flipping
+        function flipCard(event) {
+            const clickedCard = event.target;
+            const index = clickedCard.dataset.index;
+
+            if (flippedCards.length < 2 && !flippedCards.includes(index)) {
+                // Flip the card
+                clickedCard.textContent = cards[index];
+                flippedCards.push(index);
+
+                if (flippedCards.length === 2) {
+                    // Check for a match after a short delay
+                    setTimeout(checkMatch, 500);
+                }
+            }
+        }
+
+        // Function to check for a match
+        function checkMatch() {
+            const [index1, index2] = flippedCards;
+
+            const card1 = document.querySelector(`[data-index="${index1}"]`);
+            const card2 = document.querySelector(`[data-index="${index2}"]`);
+
+            if (cards[index1] === cards[index2]) {
+                // Matched
+                card1.style.backgroundColor = '#8BC34A';
+                card2.style.backgroundColor = '#8BC34A';
+                matchedPairs++;
+
+                if (matchedPairs === cards.length / 2) {
+                    alert('Congratulations! You matched all pairs.');
+                }
+            } else {
+                // Not matched
+                card1.textContent = '';
+                card2.textContent = '';
+            }
+
+            flippedCards = [];
+        }
+    </script>
+
+</body>
+</html>
